@@ -10,12 +10,39 @@ namespace app\admin\controller;
 
 
 use think\Controller;
-use think\Session;
+
 
 class Base extends Controller
 {
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * 初始化方法
+     */
+    public function initialize()
+    {
+        // 判断用户是否登录
+        $isLogin = $this->isLogin();
+        if(! $isLogin){
+            return $this->redirect('login/index');
+        }
+    }
+
+    /**
+     * 判断用户是否登录
+     * @return bool
+     */
+    public function isLogin()
+    {
+        // 获取session
+        $user = session(config('admin.admin_session'), '', config('admin.session_user_scope'));
+
+        if($user && $user->id){
+            return true;
+        }
+        return false;
     }
 }
