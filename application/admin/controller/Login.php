@@ -60,4 +60,10 @@ class Login extends Base
         }
 
     }
+
+    public function logout()
+    {
+        session(NULL, config('admin.session_user_scope'));
+        $this->redirect('login/index');
+    }
 }

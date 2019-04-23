@@ -16,6 +16,7 @@ class Base extends Controller
 {
     public function __construct()
     {
+        header("Cache-control: private");
         parent::__construct();
     }
 }
