@@ -1,0 +1,242 @@
+<!--header-->
+{include file="public/_meta" title="娱乐资讯"/}
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/layui/css/layui.css" />
+<link rel="stylesheet" href="__STATIC__/datetimepicker/bootstrap-datetimepicker.min.css">
+<!--header-->
+<div style="margin-left:auto; margin-right:auto;width: 95%;margin-top: 2%;text-align: center;">
+    <table>
+       <span class="select-box inline" style="margin-right:20px; ">
+        <select name="catid" class="select" id="catid" >
+              <option value="0">全部栏目</option>
+        </select>
+        </span> 日期范围：
+      <input type="text" name="start_time" class="input-text"   value="" style="width:140px;" >
+      -
+      <input type="text" name="end_time" class="input-text"   value=""  style="width:140px;">
+
+      <input type="text" name="keyword"  value="" placeholder=" 资讯名称" style="width:250px;margin-left: 5px;" class="input-text">
+      <button name="" id="search" class="btn btn-success" type="submit" style="margin-left: 5px;"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    </table>
+</div>
+
+<div style="margin-left:auto; margin-right:auto;width:95%;margin-top:2%">
+<table id="newsTable" class="table table-striped table-bordered" style="width:100%;" >
+  <thead>
+    <tr>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr></tr>
+  </tbody>
+  <tfoot>
+  <tr></tr>
+  </tfoot>
+</table>
+</div>
+</body>
+{include file="public/_footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script src="__STATIC__/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
+<script src="__STATIC__/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+
+    $(function () {
+        //初始化datetimepicker插件
+        $("input[name='start_time'],input[name='end_time']").datetimepicker({
+            format:'yyyy-mm-dd hh:ii',
+            todayBtn: true,
+            //不加的话会导致日期插件的箭头图标不显示
+            bootcssVer:3,
+            language:'zh-CN',
+        });
+
+
+        //获取栏目数据
+        $.ajax({
+            "type":"get",
+            "url":"/admin/category/getCategoryList",
+            "success":function(data){
+               result=JSON.parse(data).result;
+               // console.log(result);
+                $(result).each(function(index,item){
+                    $("#catid").append("<option value='"+(index+1)+"'>"+item+"</option>");
+                });
+            }
+        });
+
+        //表格设置
+        var table=$('#newsTable').DataTable({
+            //是否添加搜索功能
+            "searching": false,
+            //是否分页
+            "paging": true,
+            //分页样式
+            "pagingType":"full_numbers",
+            //分页长度
+            "iDisplayLength": 10,
+            // 是否开启表格左下的信息展示
+            "info": true,
+            // 排序规则
+            "order": [[0,'desc']],
+            // ajax请求地址
+            "ajax": {
+                "url":'/admin/news/getnews',
+            },
+            // 延迟渲染数据
+            "deferRender": true,
+            "language":{
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+            },
+            //表头数据
+            "columns": [
+                {"data": "id", "title": "序号","orderable":false},
+                {"data": "title", "title": "文章标题","orderable":false},
+                {"data": "small_title", "title": "简略标题","orderable":false},
+                {"data": "catid", "title": "栏目","orderable":false},
+                {"data": "image","title": "图片","orderable":false},
+                {"data": "create_time","title": "创建时间"},
+                {"data": "update_time","title": "更新时间","orderable":false},
+                {"data": "status","title": "状态","orderable":false},
+                {"data": "option","title": "操作","orderable":false},
+            ],
+            "columnDefs":[
+                {
+                    "render":
+                        function(data,type,row){
+                            if(data){
+                                return "<img src='http://"+data+"?imageView2/1/w/50/h/50'/>";
+                            }else{
+                                return "没有图片";
+                        }
+                    },
+                    "targets":4,
+                },
+                {
+                    "render":
+                        function(data,type,row){
+                            return result[data-1];
+                        },
+                    "targets":3,
+                }
+            ],
+        });
+
+        //按条件搜索
+        $('#search').click(function() {
+            var catVal=$("#catid").val();
+            var startTime =$("input[name='start_time']").val();
+            var endTime =$("input[name='end_time']").val();
+            var keyword=$("input[name='keyword']").val();
+            $.ajax({
+                "url":"/admin/news/searchNews",
+                "type":"get",
+                "data":{'catid':catVal,'startTime':startTime,'endTime':endTime,'keyword':keyword},
+                "success":function(data){
+                    table.clear();
+                    table.rows.add(JSON.parse(data)).draw();
+                },
+            });
+        } );
+
+        //编辑新闻
+        $("body").on("click","a[name='editor']",function(){
+            var obj=$(this).attr('data');
+            var title='管理员编辑';
+            var url='/admin/news/editor?id='+obj;
+            layer_show(title,url,800,500)
+        });
+
+
+        //ajax删除新闻
+        //因为表格是动态获取数据，后面的代码中无法获取到创建的节点，因此要用on语句
+        $("body").on("click","a[name='delete']",function(){
+            var obj=$(this);
+            layer.open({
+                type:0,
+                title:'提示',
+                area:['300px','200px'],
+                icon:3,
+                content:'确认删除吗？',
+                btn:['确认','取消'],
+                btn1:function () {
+                    // console.log(obj);
+                    // alert(123);
+                    $.ajax({
+                        "type":"get",
+                        "url":"/admin/news/delNew",
+                        "data":{'id':obj.attr('data')},
+                        "success":function (data) {
+                            if(JSON.parse(data).code==200){
+                                // console.log(obj);
+                                $(obj).parent().parent().remove();
+                                layer.msg('删除成功');
+                            }
+                        },
+                        "yes": function(index){
+                            parent.layer.close(index);
+                        },
+                    });
+
+                },
+
+            });
+
+        });
+
+
+    });
+
+    $("body").on('click',"button[name='status']",function(){
+        // console.log($(this)[0]);
+        var obj=$(this);
+        layer.open({
+            type:0,
+            title:'提示',
+            area:['300px','200px'],
+            icon:7,
+            content:(obj.val()==1)?'确认切换为待审状态吗？':'确认切换为已通过状态吗？',
+            btn1:function(){
+                $.ajax({
+                    "type":"get",
+                    "url":"/admin/news/switchStatus",
+                    "data":{'status':obj.val(),'id':obj.attr('data')},
+                    "success":function(data){
+                        if(JSON.parse(data).code==200){
+                            if( obj.val()==1){
+                                   obj.attr('class','layui-btn layui-btn-xs layui-btn-normal')
+                                    .attr('value',0)
+                                    .html('待审核');
+                            }else{
+                                   obj.attr('class','layui-btn layui-btn-primary layui-btn-xs')
+                                    .attr('value',1)
+                                    .html('已发布');
+                            }
+
+
+                            layer.msg('切换成功');
+                        }
+                    },
+                    "yes":function(index){
+                        parent.layer.close(index);
+                    }
+
+                })
+            }
+        });
+    });
+
+
+</script>
+</html>
