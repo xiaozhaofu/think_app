@@ -12,8 +12,21 @@ use app\common\lib\IAuth;
 
 class Login extends Base
 {
+    /**
+     * 覆盖掉base里的初始化方法, 防止死循环
+     */
+    public function initialize(){}
+
+    /**
+     * 登录首页
+     * @return mixed
+     */
     public function index()
     {
+        $isLogin = $this->isLogin();
+        if($isLogin){
+            return $this->redirect('index/index');
+        }
         return $this->fetch();
     }
 
