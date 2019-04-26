@@ -18,7 +18,9 @@
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
       <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="catid" class="select">
-
+                  {volist name="cats" id="val"}
+                    <option value="{$key}">{$val}</option>
+                  {/volist}
                 </select>
 				</span> </div>
     </div>
@@ -173,6 +175,7 @@
   });
 
 </script>
+{js href="__STATIC__/admin/js/common.js" /}
 <!--/请在上方写此页面业务相关的脚本-->
 
 </body>
