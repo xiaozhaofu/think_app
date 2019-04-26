@@ -14,6 +14,15 @@ class News extends Base
 {
     public function add()
     {
-        return $this->fetch();
+        if (request()->isPost()) {
+            $data = input('post.');
+            $id = model('News')->allowField(TRUE)->save($data);
+            halt($id);
+        } else {
+            return $this->fetch('', [
+                'cats' => config('cat.lists')
+            ]);
+        }
+
     }
 }
