@@ -28,7 +28,10 @@ class Base extends Controller
         // 判断用户是否登录
         $isLogin = $this->isLogin();
         if(! $isLogin){
-            return $this->redirect('login/index');
+            // return $this->redirect('login/index');
+            // 此处防止退出登录时, 页码循环嵌套
+            $url = url('login/index');
+            echo "<script>top.location.href='$url'</script>";
         }
     }
 

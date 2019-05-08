@@ -10,3 +10,23 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+/**
+ * 展示分页 TP自带的分页方法
+ * @param $obj
+ * @return string
+ */
+function pagination($obj){
+    if (! $obj) {
+        return '';
+    };
+    $params = request()->param();
+    return '<div class="imooc-app">'.$obj->appends($params)->render().'</div>';
+}
+
+function getCatName($catId){
+    if (! $catId) {
+        return '';
+    };
+    $cats = config('cat.lists');
+    return $cats[$catId]?:'';
+}
