@@ -1,5 +1,5 @@
 <!--header-->
-{include file="public/_meta" /}
+{include file="public/_meta" title="添加管理" /}
 <article class="page-container">
   <form class="form form-horizontal" id="form-singwaapp" url="{:url('news/add')}">
     <div class="row cl">
@@ -70,6 +70,7 @@
             <img class="layui-upload-img" id="upload-img" style="width: 200px;height: 150px;">
             <p id="demoText" ></p>
           </div>
+          <input type="hidden" name="image" value="" id="image_upload_url">
         </div>
     </div>
 
@@ -90,7 +91,7 @@
 
 <!--header-->
 {include file="public/_footer" /}
-{js href="__STATIC__/layui/layui.js"}
+
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="__STATIC__/hadmin/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__STATIC__/hadmin/lib/jquery.validation/1.14.0/validate-methods.js"></script>
@@ -116,10 +117,12 @@
         });
       }
       ,done: function(res){
+        console.log(res.data);  // 打印图片路径
         //如果上传失败
         if(res.code > 0){
           return layer.msg('上传失败');
         }
+        $('#image_upload_url').attr('value', res.data);
         //上传成功
         return layer.msg('上传成功');
       }
@@ -175,7 +178,7 @@
   });
 
 </script>
-{js href="__STATIC__/admin/js/common.js" /}
+
 <!--/请在上方写此页面业务相关的脚本-->
 
 </body>

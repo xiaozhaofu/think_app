@@ -37,13 +37,17 @@ class Image extends Base
     public function upload()
     {
         try{
-            $image = Upload::image();
+            $image = Upload::image();   //得到文件名
         } catch (\Exception $e){
             echo json_encode(['code' => 'F', 'msg' => $e->getMessage()]);
         }
 
         if ($image) {
-            echo json_encode(['code' => 'T', 'msg' => '上传成功', 'data' => config('qiniu.image_url').'/'.$image]);
+            echo json_encode([
+                'code' => 'T',
+                'msg' => '上传成功',
+                'data' => config('qiniu.image_url').'/'.$image //data为图片路径
+            ]);
         } else {
             echo json_encode(['code' => 'F', 'msg' => '上传失败']);
         }
