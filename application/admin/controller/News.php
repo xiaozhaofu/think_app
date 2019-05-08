@@ -28,6 +28,7 @@ class News extends Base
             'catid' => empty($data['catid']) ? '' : $data['catid'],
             'title' => empty($data['title'])? '' : $data['title'],
             'news' => $news,
+            // $news打印出来为对象, 若要获取对象里的每个属性的值, 则用 属性名() 的方式获取
             'count' => $news->total(),  //数据总条数
             'curr' => $news->currentPage(), //当前页码数
             'listRows' => $news->listRows(),    // 每页显示条数

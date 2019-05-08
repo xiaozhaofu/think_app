@@ -14,6 +14,8 @@ use think\Controller;
 
 class Base extends Controller
 {
+    public $model = '';
+
     public function __construct()
     {
         header("Cache-control: private");
