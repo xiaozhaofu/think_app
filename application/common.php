@@ -30,3 +30,21 @@ function getCatName($catId){
     $cats = config('cat.lists');
     return $cats[$catId]?:'';
 }
+
+/**
+ * 通用化API接口数据输出
+ * @param $status
+ * @param $message
+ * @param array $data
+ * @param int $httpCode
+ * @return \think\response\Json
+ */
+function show($status, $message, $data=[], $httpCode=200){
+    $data = [
+        'status' => $status,
+        'message' => $message,
+        'data' => $data,
+    ];
+
+    return json($data, $httpCode);
+}
