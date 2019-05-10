@@ -37,6 +37,7 @@ function getCatName($catId){
 }
 
 
+
 /**
  * 展示状态
  * @param $id
@@ -61,4 +62,23 @@ function show_status($id, $status){
 }
 
 
+
+
+/**
+ * 通用化API接口数据输出
+ * @param $status
+ * @param $message
+ * @param array $data
+ * @param int $httpCode
+ * @return \think\response\Json
+ */
+function show($status, $message, $data=[], $httpCode=200){
+    $data = [
+        'status' => $status,
+        'message' => $message,
+        'data' => $data,
+    ];
+
+    return json($data, $httpCode);
+}
 
