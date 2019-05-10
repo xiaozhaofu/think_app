@@ -64,8 +64,8 @@ function app_del(obj) {
 
 function app_status(obj) {
     var url = $(obj).attr('status_url');
-    
-    layer.confirm('确认要删除吗？',function(index){
+
+    layer.confirm('确认要修改状态吗？',function(index){
         $.ajax({
             type: 'POST',
             url: url,
