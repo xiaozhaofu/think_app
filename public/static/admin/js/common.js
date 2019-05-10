@@ -62,6 +62,10 @@ function app_del(obj) {
 
 }
 
+/**
+ * 发布状态修改操作
+ * @param obj
+ */
 function app_status(obj) {
     var url = $(obj).attr('status_url');
 
