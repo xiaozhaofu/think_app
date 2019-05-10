@@ -23,6 +23,11 @@ function pagination($obj){
     return '<div class="imooc-app">'.$obj->appends($params)->render().'</div>';
 }
 
+/**
+ * 处理分类显示名称
+ * @param $catId
+ * @return string
+ */
 function getCatName($catId){
     if (! $catId) {
         return '';
@@ -30,6 +35,34 @@ function getCatName($catId){
     $cats = config('cat.lists');
     return $cats[$catId]?:'';
 }
+
+
+
+/**
+ * 展示状态
+ * @param $id
+ * @param $status
+ */
+function show_status($id, $status){
+    $controller = request()->controller();
+    $sta = $status == 1 ? 0 : 1;
+    $url = url($controller.'/status', ['id' => $id, 'status' => $sta]);
+    if (1 == $status) {
+        $str = "<a href='javascript:;' title='修改状态' status_url='" . $url . "' onclick='app_status(this)'>
+                <span class='label label-success radius'>正常</span>
+                </a>";
+    } else if (0 == $status) {
+        $str = "<a href='javascript:;' title='修改状态' status_url='" . $url . "' onclick='app_status(this)'>
+                <span class='label label-danger radius'>待审</span>
+                </a>";
+    }
+
+    return $str;
+
+}
+
+
+
 
 /**
  * 通用化API接口数据输出
@@ -48,3 +81,4 @@ function show($status, $message, $data=[], $httpCode=200){
 
     return json($data, $httpCode);
 }
+
