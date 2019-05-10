@@ -64,7 +64,7 @@ function app_del(obj) {
 
 function app_status(obj) {
     var url = $(obj).attr('status_url');
-    // alert(url)
+    
     layer.confirm('确认要删除吗？',function(index){
         $.ajax({
             type: 'POST',
