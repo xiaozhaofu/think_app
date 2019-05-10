@@ -13,7 +13,7 @@ class News extends Base
         ];
         $order = ['id' => 'desc'];
         $result = self::where($data)->order($order)->paginate(5);
-        echo self::getLastSql();
+
         return $result;
     }
 }
