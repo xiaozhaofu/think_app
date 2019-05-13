@@ -72,7 +72,7 @@ function show_status($id, $status){
  * @param int $httpCode
  * @return \think\response\Json
  */
-function show($status, $message, $data=[], $httpCode=200){
+function json_out($status, $message, $data=[], $httpCode=200){
     $data = [
         'status' => $status,
         'message' => $message,
