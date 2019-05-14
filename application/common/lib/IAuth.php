@@ -55,13 +55,17 @@ class IAuth
         if (! is_array($arr) || $arr['did'] != $data['did'] || empty($arr)) {
             return FALSE;
         }
-        if ((time() - ceil($arr['time']/1000)) > config('app_sign_time')) {
-            return FALSE;
+
+        if(! config('app_debug')){
+            if ((time() - ceil($arr['time']/1000)) > config('app_sign_time')) {
+                return FALSE;
+            }
+            //授权码唯一性判定
+            if (Cache::get($data['sign'])) {
+                return FALSE;
+            }
         }
-        //授权码唯一性判定
-        if (Cache::get($data['sign'])) {
-            return FALSE;
-        }
+
         return TRUE;
     }
 }

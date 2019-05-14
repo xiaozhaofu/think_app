@@ -20,3 +20,4 @@ Route::get('test', 'api/test/index');
 Route::put('test/:id', 'api/test/update');
 
 Route::resource('test', 'api/test');
+Route::get('api/cat', 'api/cat/read');
