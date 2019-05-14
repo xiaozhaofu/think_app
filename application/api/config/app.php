@@ -7,4 +7,10 @@
  */
 return [
     'default_return_type' => 'json',
+    'apptypes' => [
+        'ios',
+        'android'
+    ],
+    'app_sign_time' => 10000,
+    'app_sign_cache_time' => 100000,
 ];

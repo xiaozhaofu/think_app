@@ -20,6 +20,11 @@ class ApiHandleException extends Handle
     public $httpCode = 501;
     public $code = 0;
 
+    /**
+     * 自定义异常信息, 重写Handle中的render方法
+     * @param \Exception $e
+     * @return \think\Response|\think\response\Json
+     */
     public function render(\Exception $e)
     {
         // 如果开启debug, 异常交给系统处理
