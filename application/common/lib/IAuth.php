@@ -55,7 +55,7 @@ class IAuth
         if (! is_array($arr) || $arr['did'] != $data['did'] || empty($arr)) {
             return FALSE;
         }
-
+        // 如果在开发环境下, 即app_debug为true时, 则不进行时间的校验和唯一性的判定
         if(! config('app_debug')){
             if ((time() - ceil($arr['time']/1000)) > config('app_sign_time')) {
                 return FALSE;
