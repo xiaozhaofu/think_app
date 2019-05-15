@@ -20,4 +20,6 @@ Route::get('test', 'api/test/index');
 Route::put('test/:id', 'api/test/update');
 
 Route::resource('test', 'api/test');
-Route::get('api/cat', 'api/cat/read');
+// 版本控制, api/v1/cat  对应 api/v1.cat/read, v1.cat即v1目录下的cat.php的read方法
+Route::get('api/:ver/cat', 'api/:ver.cat/read');
+Route::get('api/:ver/index', 'api/:ver.index/index');
