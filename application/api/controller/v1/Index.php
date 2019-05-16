@@ -14,8 +14,16 @@ class Index extends Common
      */
     public function index()
     {
-        // $headers = model('News')->getHeadIndexNormalNews();
-        $positon = model('News')->getPositionNormalNews();
-        return json_out(1, 'ok',$positon,200);
+        $headers = model('News')->getHeadIndexNormalNews();
+        $headers = $this->getDealNews($headers);
+        $position = model('News')->getPositionNormalNews();
+        $position = $this->getDealNews($position);
+
+        $res = [
+            'headers' => $headers,
+            'position' => $position,
+        ];
+
+        return json_out(1, 'ok',$res,200);
     }
 }

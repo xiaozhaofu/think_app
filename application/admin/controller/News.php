@@ -21,7 +21,7 @@ class News extends Base
         $whereData = [];
         $whereData = $this->get_whereData($data, $whereData);
         // halt($whereData);
-        $news = model('News')->getNews($whereData);
+        $news = model('News')->getNews($whereData, 5);
         // halt($news);
         return $this->fetch('',[
             'cats' => config('cat.lists'),

@@ -23,3 +23,6 @@ Route::resource('test', 'api/test');
 // 版本控制, api/v1/cat  对应 api/v1.cat/read, v1.cat即v1目录下的cat.php的read方法
 Route::get('api/:ver/cat', 'api/:ver.cat/read');
 Route::get('api/:ver/index', 'api/:ver.index/index');
+
+//New相关
+Route::resource('api/:ver/news', 'api/:ver.news');
