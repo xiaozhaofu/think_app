@@ -60,4 +60,17 @@ class Common extends Controller
         // echo $aes->encrypt($str);die;
         echo $aes->decrypt($aesstr);die;
     }
+
+
+    protected function getDealNews($news = [])
+    {
+        if (empty($news)) {
+            return [];
+        }
+        $cats = config('cat.lists');
+        foreach ($news as $k => $v) {
+            $news[$k]['catname'] = $cats[$v['catid']]?:'-';
+        }
+        return $news;
+    }
 }
