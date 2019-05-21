@@ -1,11 +1,13 @@
 <?php
 
-namespace app\common\controller;
+namespace app\api\controller\v1;
 
-use think\Controller;
+use app\api\controller\Common;
+use app\common\lib\exception\ApiException;
+
 use think\Request;
 
-class api. extends Controller
+class Rank extends Common
 {
     /**
      * 显示资源列表
@@ -14,17 +16,15 @@ class api. extends Controller
      */
     public function index()
     {
-        //
-    }
+        try{
+            $ranks = model('News')->getRankNormalNews();
+            $ranks = $this->getDealNews($ranks);
+        } catch (\Exception $e){
+            return new ApiException('error',400);
+        }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
+        return json_out(config('code.success'), 'ok', $ranks, 200);
+
     }
 
     /**
@@ -45,17 +45,6 @@ class api. extends Controller
      * @return \think\Response
      */
     public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
     {
         //
     }

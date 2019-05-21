@@ -64,6 +64,27 @@ class News extends Base
         return $res;
     }
 
+
+    /**
+     * 排行榜
+     * @param int $num
+     * @return array|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getRankNormalNews($num = 20)
+    {
+        $data = [
+            'status' => 1,
+        ];
+        $order = [
+            'read_count' => 'desc'
+        ];
+
+        $res = $this->getNewsRes($num, $data, $order);
+        return $res;
+    }
     /**
      * 获取参数的数据字段
      * @return array

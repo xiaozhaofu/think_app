@@ -26,3 +26,4 @@ Route::get('api/:ver/index', 'api/:ver.index/index');
 
 //New相关
 Route::resource('api/:ver/news', 'api/:ver.news');
+Route::get('api/:ver/rank', 'api/:ver.rank/index');
